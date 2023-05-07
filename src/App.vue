@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 import BattleshipGrid from "./components/BattleshipGrid.vue";
 import { FieldState, solve } from "./solver";
 import ChoiceDialog from "./components/ChoiceDialog.vue";
 
 const selectedTile = ref<[number, number] | null>(null);
 const board = reactive<FieldState[][]>(
-  Array<FieldState[]>(10).fill(Array<FieldState>(10).fill(FieldState.Empty))
+  Array.from(Array(10), () => Array.from(Array(10), () => FieldState.Empty))
 );
 
 function setTile(state: FieldState) {
@@ -15,7 +15,9 @@ function setTile(state: FieldState) {
   selectedTile.value = null;
 }
 
-const distribution = solve(board, Date.now() + 2000, 10000);
+const distribution = computed(() => {
+  return solve(board, Date.now() + 500, 10000);
+});
 </script>
 
 <template>
@@ -32,6 +34,7 @@ const distribution = solve(board, Date.now() + 2000, 10000);
     :tiles="
       distribution.map((a) =>
         a.map((b) => ({
+          text: Math.floor(b * 100).toString(),
           color: `rgb(${255 * (1 - 0.9 * b)}, ${228 * (1 - 0.9 * b)}, ${230 * (1 - 0.9 * b)})`,
         }))
       )

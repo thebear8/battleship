@@ -1,5 +1,5 @@
 <script setup lang="ts">
-defineProps<{ tiles: { color: string }[][] }>();
+defineProps<{ tiles: { text: string; color: string }[][] }>();
 defineEmits<{
   (event: "click", tile: [number, number]): any;
 }>();
@@ -26,7 +26,7 @@ defineEmits<{
             :style="{ backgroundColor: tiles[i - 1][j - 1].color }"
             @click="$emit('click', [i - 1, j - 1])"
           >
-            {{ i }}.{{ j }}
+            {{ tiles[i - 1][j - 1].text }}
           </div>
         </template>
       </template>

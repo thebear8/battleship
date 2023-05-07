@@ -57,7 +57,9 @@ function populateBoard(board: FieldState[][], ships: number[], attempts: number)
   return false;
 }
 
-export function solve(base: FieldState[][], timeout: number, attempts: number): number[][] {
+export function solve(base_: FieldState[][], timeout: number, attempts: number): number[][] {
+  const base = createBoard();
+  copyBoard(base_, base);
   const board = createBoard();
   const density = Array.from(Array(10), () => Array.from(Array(10), () => 0));
 
@@ -72,7 +74,6 @@ export function solve(base: FieldState[][], timeout: number, attempts: number): 
     }
   }
 
-  console.log(density);
   const max = Math.max(...density.map((a) => Math.max(...a)), 1);
   return density.map((a) => a.map((b) => b / max));
 }
